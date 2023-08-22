@@ -2,11 +2,30 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.elly.web.dao.NoticeDAO">
 
-<select id = "list" resultType="Map">
-select *
-from notice
+	<select id="list" resultType="Map">
+		select *
+		from notice
+		where ndel = 1
+		order by nno desc
+		limit 0, 10
+	</select>
 
-</select>
-   
+
+	<select id="detail" parameterType="Integer" resultType="Map">
+
+   SELECT nno, ntitle, ncontent, ndate, nrealfile
+   from notice where nno=#{nno}
+		
+	</select>
+	
+	
+	
+	<select id="getOriFileName" parameterType="String" resultType="String">
+	select norifile
+	from notice
+	where nrealfile=#{fileName}
+	
+	</select>
+
 </mapper>
 

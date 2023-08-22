@@ -4,11 +4,11 @@
 
 
 <select id="adminLogin" parameterType="Map" resultType="Map">
-
+<![CDATA[
 select count(*) as count, m_name, m_grade
 from members
-where m_id = #{id} AND AES_DECRYPT(UNHEX(m_pw), 'sik') =#{pw}
-
+where m_id = #{id} AND AES_DECRYPT(UNHEX(m_pw), 'sik') =#{pw} AND m_grade > 5
+]]>
 </select>
 
 
@@ -18,9 +18,9 @@ SELECT * FROM notice ORDER BY nno DESC
 
 
 <insert id="noticeWrite" parameterType="Map">
-   INSERT INTO notice (ntitle, ncontent, m_no <if test="#{upFile != null and upFile != ''}">,norifile</if>)
+   INSERT INTO notice (ntitle, ncontent, m_no <if test="#{upFile != null and upFile != ''}">,norifile, nrealfile </if>)
    VALUES (#{title}, #{content}, #{mno}
-   <if test="#{upFile != null and upFile != ''}">,#{upFile}</if>
+   <if test="#{upFile != null and upFile != ''}">,#{upFile}, #{realFile}</if>
    )
    </insert>
 

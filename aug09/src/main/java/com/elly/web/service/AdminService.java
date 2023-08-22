@@ -21,7 +21,6 @@ public class AdminService {
 }
 
 	public List<Map<String, Object>> list() {
-		// TODO Auto-generated method stub
 		return  adminDAO.list();
 	}
 
