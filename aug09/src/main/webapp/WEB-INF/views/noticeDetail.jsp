@@ -87,7 +87,7 @@
             </c:if>
          </c:forTokens>
              </div>
-      <button class="btn btn-primary xi-view-list" onclick="location.href='./multiboard'">멀티보드로</button>
+      <button class="btn btn-primary xi-view-list" onclick="location.href='./abmin/notice'">공지사항으로</button>
 
       </div>
       </div>
