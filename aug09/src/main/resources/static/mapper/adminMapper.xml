@@ -23,5 +23,26 @@ SELECT * FROM notice ORDER BY nno DESC
    <if test="#{upFile != null and upFile != ''}">,#{upFile}, #{realFile}</if>
    )
    </insert>
+   
+   
+   	
+	<select id="detail" parameterType="Integer" resultType="String">
+		SELECT ncontent  FROM notice WHERE nno=#{nno }
+	</select>
+   
+<update id="noticeHide" parameterType="Integer">
+UPDATE notice
+SET ndel = if(ndel = 1,0,1)
+where nno=#{nno}
+
+</update>
+
+
+	<select id="setupList" resultType="Map">
+		SELECT b_no, mb_cate, b_catename, b_url, b_comment
+		FROM setupboard ORDER BY b_no DESC
+	</select>
+
+
 
 </mapper>

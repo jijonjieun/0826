@@ -4,32 +4,40 @@
 
 
 
-<select id="list" parameterType="Integer" resultType="Map">
-      SELECT *
-      FROM multiview
-      WHERE mb_board = #{board}
-      ORDER BY mb_no DESC
-      limit 0, 10
+	<select id="list" parameterType="Integer" resultType="Map">
+		SELECT *, (SELECT COUNT(*) FROM multiview WHERE mb_board=#{board}) AS count
+		FROM (SELECT CAST(@ROWNUM:=@ROWNUM+1 AS UNSIGNED) AS rowNum, m.*
+			FROM multiview m, (SELECT @ROWNUM:=0) AS R
+		 	WHERE m.mb_board=#{board}
+			ORDER BY m.mb_no ASC) as mm
+		ORDER BY mm.mb_no DESC
+		LIMIT 0, 10
+	</select>
 
-</select>
+	<insert id="mbwrite" parameterType="Map">
 
-   <insert id="mbwrite" parameterType="Map">
-   
-      INSERT INTO multiboard (mb_title, mb_content, mb_board, m_no)
-      VALUES (#{title}, #{content }, #{board }, (SELECT m_no FROM members WHERE m_id=#{mid }))
-     
-      <selectKey resultType="Integer" keyProperty="mb_no" order="AFTER">
-      SELECT LAST_INSERT_ID()
-      
-      </selectKey>
-      
-   </insert>
-   
-   <select id="mbdetail" parameterType="Integer" resultType="Map">
-   SELECT mb_no, mb_title, mb_content, mb_date, mb_read, mb_board, m_name
-   from multiview where mb_no=#{mbno}
-   </select>
-   
-   
+		INSERT INTO multiboard (mb_title, mb_content, mb_board, m_no)
+		VALUES (#{title}, #{content }, #{board }, (SELECT m_no FROM members WHERE
+		m_id=#{mid }))
+
+		<selectKey resultType="Integer" keyProperty="mb_no"
+			order="AFTER">
+			SELECT LAST_INSERT_ID()
+
+		</selectKey>
+
+	</insert>
+
+	<select id="mbdetail" parameterType="Integer" resultType="Map">
+		SELECT mb_no, mb_title, mb_content, mb_date, mb_read, mb_board, m_name
+		from multiview where mb_no=#{mbno}
+	</select>
+
+	<select id="boardlist" resultType="Map">
+		SELECT * FROM setupboard ORDER BY b_no ASC
+	</select>
+
+
+
 </mapper>
 

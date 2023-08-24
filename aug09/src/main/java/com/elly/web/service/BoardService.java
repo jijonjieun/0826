@@ -41,6 +41,10 @@ public class BoardService {
 		dto.setUuid(UUID.randomUUID().toString());;
 		return boardDAO.write(dto);
 	}
+
+	public BoardDTO detail2(int bno) {
+		return boardDAO.detail2(bno);
+	}
 	
 	
 

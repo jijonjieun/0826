@@ -27,6 +27,19 @@ body {
 	/* 호버하기까지의 지연시간 */
 }
 
+.menu-logo{
+	padding: 30px;
+	width: 190px;
+	height: auto;
+	box-sizing: border-box;
+}
+.menu-logo img{
+	width:100px;
+	height:100px;
+	margin: auto;
+    display: block;
+}
+
 .menu-item {
 	width: 190px;
 	height: 50px;

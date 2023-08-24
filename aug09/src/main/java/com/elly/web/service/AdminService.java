@@ -29,5 +29,17 @@ public class AdminService {
 	
 		
 	}
+
+	public String detail(int nno) {
+		return adminDAO.detail(nno);
+	}
+
+	public int noticeHide(int nno) {
+		return adminDAO.noticeHide(nno);
+	}
+
+	public List<Map<String, Object>> setupList() {
+		return adminDAO.setupList();
+	}
 	
 }

@@ -25,7 +25,11 @@ public class MultiBoardController {
 	public String multiboard(@RequestParam(value = "board", required = false, defaultValue = "1") int board,
 			Model model) {
 
+		
+		//화면에 보여줄 게시판 목록도 가져오기
+		List<Map<String, Object>> boardlist = multiBoardService.boardlist();
 		List<Map<String, Object>> list = multiBoardService.list(board);
+		model.addAttribute("boardlist", boardlist);
 		model.addAttribute("list", list);
 		System.out.println(list);
 
@@ -54,12 +58,13 @@ public class MultiBoardController {
 				//selectkey기법
 		map.put("mid", sessoin.getAttribute("mid"));	
 		
+		
 		//int result =  multiBoardService.mbwrite(map);
 		multiBoardService.mbwrite(map);
 		//mb_no라는 이름으로 마지막 게시판번호를 뽑아옴
 		//System.out.println(map);
 		//System.out.println(mb_no);
-		return "redirect:/mbdtail?mbno="+map.get("mb_no");
+		return "redirect:/mbdetail?board="+map.get("board")+"&mbno="+map.get("mb_no");
 		} else {
 			return "redirect:/login?error=login";
 		}

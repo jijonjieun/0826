@@ -1,12 +1,8 @@
 package com.elly.web.controller;
 
 import java.io.File;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -14,21 +10,25 @@ import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.apache.ibatis.javassist.Loader.Simple;
+import org.apache.commons.mail.EmailException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.elly.web.service.AdminService;
+import com.elly.web.service.NoticeService;
 import com.elly.web.util.Util;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 @Controller
 @RequestMapping("/admin") // 어드민폴더아래 있는 애들은 이쪽으로 옴
@@ -164,9 +164,58 @@ public class AdminController {
 }
 	
 	//메일보내기
-	@GetMapping("/mail")
+	@GetMapping("/mail")	
 	public String mail() {
 		return "admin/mail";
+	}
+	
+	
+	@PostMapping("/mail")
+	public String mail(@RequestParam Map<String, Object> map) throws EmailException {
+		// util.simpleMailSender(map);
+		util.htmlMailSender(map);
+		
+		return "admin/mail";
+	}
+	
+	
+	//noticeDetail
+	@ResponseBody
+	@PostMapping("/noticeDetail")
+	public String noticeDetail(@RequestParam("nno") int nno) {
+		System.out.println(nno);
+		
+		
+		ObjectNode json = JsonNodeFactory.instance.objectNode();
+		String result = adminService.detail(nno);
+		json.put("content", result);
+		
+
+		return json.toString();
+	}
+	
+	
+	//noticeHide
+	@ResponseBody
+	@PostMapping("/noticeHide")
+	public String noticeHide(@RequestParam("nno") int nno) {
+	int result = adminService.noticeHide(nno);
+	ObjectNode json = JsonNodeFactory.instance.objectNode();
+	json.put("result", result);
+		return json.toString();
+		
+	}
+	
+	
+	//20230824 어플리케이션 테스트 수행
+	//밸류만있다면 겟과 포스트 동시에 받을거라는 뜻이다.
+	@RequestMapping(value = "/multiBoard", method = RequestMethod.GET)
+	public String multiBoard(Model model) {
+		//setup보드 내용을 가져와서 아래 jsp에 찍어주세요.
+		List<Map<String, Object>> setupList = adminService.setupList();
+		model.addAttribute("setupList", setupList);
+		
+		return "admin/multiBoard";
 	}
 	
 	
