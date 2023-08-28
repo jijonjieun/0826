@@ -5,7 +5,7 @@
 			<div class="menu-item" onclick="url('multiBoard')">
 				<i class="xi-library-books xi-2x"></i>게시판 관리
 			</div>
-			<div class="menu-item" onclick="url('post')">
+			<div class="menu-item" onclick="url('post?cate=0')">
 				<i class="xi-paper xi-2x"></i>게시글 관리
 			</div>
 			<div class="menu-item" onclick="url('member')">
